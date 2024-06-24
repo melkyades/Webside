@@ -8,6 +8,8 @@ on:
 jobs:
   release:
     runs-on: ${{ matrix.os }}
+    env:
+      SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_TOKEN }}
 
     strategy:
       matrix:
@@ -28,8 +30,6 @@ jobs:
       # install snapcraft and login to allow uploading it to snap store
       - name: Install Snapcraft
         uses: samuelmeuli/action-snapcraft@v2
-        with:
-          snapcraft_token: ${{ secrets.snapcraft_token }}
 
       - name: Build/release Electron app
         uses: Yan-Jobs/action-electron-builder@v1.7.0
