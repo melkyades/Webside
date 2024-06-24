@@ -25,9 +25,11 @@ jobs:
       - name: Set CI to false
         run: echo "CI=false" >> $GITHUB_ENV
 
+      # install snapcraft and login to allow uploading it to snap store
       - name: Install Snapcraft
         uses: samuelmeuli/action-snapcraft@v2
-  
+            snapcraft_token: ${{ secrets.snapcraft_token }}
+
       - name: Build/release Electron app
         uses: Yan-Jobs/action-electron-builder@v1.7.0
         with:
@@ -40,11 +42,4 @@ jobs:
           VERSION=${GITHUB_REF#refs/tags/v}
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
           
-      - name: Publish Snap
-        uses: snapcore/action-publish@v1
-        env:
-          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.snapcraft_token }}
-        with:
-          snap: dist/webside_${{env.VERSION}}_amd64.snap
-          release: edge
 
